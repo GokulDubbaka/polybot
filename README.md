@@ -1,174 +1,100 @@
-<div align="center">
+# 🤖 PolyBot — Algorithmic Prediction Market Trading Engine
 
-# 🤖 PolyBot
+> **Status:** Paper-trading mode only · No live funds at risk · Seeking contributors
 
-**AI-powered prediction market trading engine for Polymarket.**
-
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
-[![Claude AI](https://img.shields.io/badge/Powered%20by-Claude%20AI-orange)](https://anthropic.com)
-[![Trading Mode](https://img.shields.io/badge/Default%20Mode-Paper%20Trading-yellow)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue)](https://www.python.org)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-*Scan → Predict → Size → Execute → Monitor — all autonomously.*
-
-[Features](#-features) · [Architecture](#-architecture) · [Quick Start](#-quick-start) · [Configuration](#-configuration) · [Disclaimer](#-disclaimer)
-
-</div>
+> ⚠️ **Risk Warning:** Prediction market trading carries significant financial risk. This software is for research and educational purposes. Past paper-trading results do not guarantee live trading profits.
 
 ---
 
-## ✨ Features
+## 🎯 Vision
 
-- 📡 **Real-time market scanning** — Continuously monitors 50+ active Polymarket prediction markets
-- 🧠 **LLM intelligence** — Uses Claude (claude-opus) for deep probabilistic reasoning on each market
-- 📰 **Multi-source signal fusion** — RSS news, Reddit sentiment, Metaculus calibration data, Manifold Markets
-- 📊 **Brier Score calibration** — Tracks model accuracy over rolling window; halts if accuracy degrades
-- 💰 **Dynamic position sizing** — Capital allocation matrix across 5 time horizons × 3 risk levels
-- 🛡️ **Multi-layer risk management** — Daily drawdown kill switch, category exposure caps, liquidity filters
-- 📄 **Paper trading mode** — Full simulation with P&L tracking, Sharpe ratio, win rate — no real money needed
-- 🔁 **Live trading mode** — Real execution on Polymarket CLOB with private key (use with caution)
+PolyBot aspires to compete with the most sophisticated algorithmic traders on [Polymarket](https://polymarket.com) — the world's largest decentralised prediction market:
 
----
+**Reference benchmarks we study:**
+- **Theo4** — High-conviction, large-position political expert who made tens of millions on the 2024 US election by using unconventional data (neighbour polling) that outperformed traditional polls. Our lesson: *information edge beats execution speed*
+- **Fredi9999 / kch123 / Beachboy4** — Structural arbitrage and market-making bots that capture spread and cross-market price discrepancies at high frequency. Our lesson: *mathematical mispricing is more reliable than outcome prediction*
+- **ascetic0x / T-Bot** — Research-driven accounts that focus on niche markets with low liquidity and high information asymmetry. Our lesson: *specialisation in a domain beats general trading*
 
-## 🏗️ Architecture
-
-```
-polybot/
-├── main.py                   # 🚀 Entry point — PolyBot orchestrator
-├── config/
-│   └── settings.py           # All configuration (loaded from .env)
-├── core/
-│   ├── database.py           # SQLite persistence (trades, snapshots)
-│   └── polymarket_client.py  # Polymarket CLOB & Gamma API client
-├── intelligence/
-│   └── gatherer.py           # News RSS, Reddit, Metaculus data fusion
-├── models/
-│   └── prediction_engine.py  # Claude LLM prediction + Brier calibration
-├── trading/
-│   ├── risk_manager.py       # Position sizing, drawdown, exposure limits
-│   └── paper_trader.py       # Paper trade execution & position monitoring
-└── data/
-    └── polybot.db            # SQLite database (auto-created)
-```
-
-**Full cycle flow:**
-
-```
-News RSS + Reddit + Metaculus
-          ↓
-    IntelligenceGatherer
-          ↓
-    PredictionEngine (Claude LLM)
-    → probability estimate
-    → edge calculation
-    → trade signal
-          ↓
-    RiskManager
-    → position sizing
-    → exposure checks
-    → kill switch check
-          ↓
-    PaperTrader / LiveTrader
-    → order execution
-    → position monitoring
-    → P&L tracking
-```
+**What we are building:** A modular engine that supports all three strategies — high-conviction position taking, structural arbitrage, and niche-market specialisation — starting in paper mode and graduating to live trading only after rigorous backtesting.
 
 ---
 
-## ⚡ Quick Start
+## ✅ What We Have Actually Built
 
-### Prerequisites
-- Python 3.10+
-- An Anthropic API key ([get one here](https://console.anthropic.com))
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Polymarket CLOB client | ✅ Working | REST + WebSocket market data feed |
+| Paper trader | ✅ Working | Simulates fills, tracks P&L, no real funds |
+| Risk manager | ✅ Working | Kelly criterion position sizing, max drawdown circuit breaker, exposure limits |
+| Intelligence gatherer | ✅ Working | RSS feeds, LLM summarisation, sentiment scoring |
+| Prediction engine | ✅ Scaffold | Gradient boosting model stub, feature pipeline defined |
+| Mempool sniper | ✅ Scaffold | On-chain event monitoring hook (Web3) |
+| Order executor | ✅ Scaffold | Wired to paper trader, not live CLOB |
+| SQLite trade journal | ✅ Working | Every simulated order logged with reasoning |
+| Backtesting harness | ❌ Missing | No historical replay engine yet |
 
-### Install
+---
+
+## ❌ What We Have NOT Yet Achieved
+
+### 1. Profitable Live Trading
+The bot has **never traded with real money**. Paper results are promising but unvalidated against live market microstructure (slippage, latency, partial fills, API rate limits).
+
+**Why not yet:** Live trading on Polymarket requires the `py-clob-client` library, a funded wallet, and tested execution logic. We deliberately kept this locked behind paper mode until backtesting proves statistical edge.
+
+### 2. Real Arbitrage Detection
+Structural arbitrage (the strategy of Fredi9999-style bots) requires:
+- Sub-second price feeds from multiple markets simultaneously
+- Cross-platform arbitrage (Polymarket ↔ Kalshi ↔ Manifold)
+- Order routing logic that accounts for transaction costs and settlement time
+
+We have the architecture but not the execution speed or multi-platform feed integration.
+
+### 3. High-Conviction Signal Generation
+To replicate Theo4's edge we need:
+- Proprietary data sources (polling, social sentiment, alternative data)
+- Domain expert knowledge encoded as trading rules
+- A validated backtesting framework to confirm edge before deployment
+
+### 4. Production-Grade Reliability
+No retry logic, no dead-letter queue, no alerting for position drift, no graceful shutdown for open positions.
+
+---
+
+## 🚀 Quick Start (Paper Mode)
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/polybot.git
+git clone https://github.com/GokulDubbaka/polybot.git
 cd polybot
-
-# Install dependencies
 pip install -r polybot/requirements.txt
-
-# Configure environment
-cp polybot/.env.example polybot/.env
-# Edit polybot/.env with your API keys
-```
-
-### Run (Paper Trading — No Real Money)
-
-```bash
-cd polybot
-python main.py
-```
-
-### Run a single test cycle
-
-```bash
-python main.py --once
-```
-
-### Live Trading (Real Money — Use With Extreme Caution)
-
-```bash
-python main.py --live
-# You will be prompted to type 'CONFIRM LIVE' to proceed
+cp polybot/.env.example polybot/.env    # fill in API keys (read-only for paper mode)
+python polybot/main.py --mode paper
 ```
 
 ---
 
-## ⚙️ Configuration
+## 🤝 How You Can Help
 
-Copy `polybot/.env.example` to `polybot/.env` and fill in:
+### 📊 Quant / Strategy
+- **Backtesting engine:** Build a historical replay system using Polymarket's public resolution data
+- **Arbitrage detection:** Implement real-time cross-market price monitoring between Polymarket and Kalshi
+- **Kelly position sizing:** Improve the risk model with dynamic Kelly fraction based on market liquidity depth
+- **Signal research:** Identify new information sources (alternative data, on-chain metrics, political intel) that predict market resolution
 
-| Variable | Required | Description |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | ✅ Yes | Your Anthropic Claude API key |
-| `OPENAI_API_KEY` | Optional | Fallback LLM (not required) |
-| `POLYMARKET_PRIVATE_KEY` | Live mode only | Your Polymarket wallet private key |
-| `TRADING_MODE` | No | `PAPER` (default) or `LIVE` |
+### 🔧 Engineering
+- **Live CLOB integration:** Wire the order executor to `py-clob-client` with proper error handling, retries, and position reconciliation
+- **Latency optimisation:** Reduce order-to-fill latency using WebSocket streaming instead of REST polling
+- **Multi-market monitoring:** Stream L2 order book updates for 50+ markets simultaneously without exceeding API rate limits
 
-All risk parameters (`MAX_SINGLE_POSITION_PCT`, `DAILY_DRAWDOWN_KILL_PCT`, etc.) can be tuned in `polybot/config/settings.py`.
+### 🤖 AI / ML
+- **LLM market analyst:** Use LLMs to read news articles and output probability estimates for specific market questions
+- **Calibration system:** Measure and improve the probability calibration of the prediction engine (Brier score, reliability diagrams)
 
----
-
-## 📈 Trading Logic
-
-1. **Market Discovery** — Fetches 50 active binary markets from Polymarket CLOB every 60 seconds
-2. **Context Building** — Matches each market against recent news headlines using keyword similarity
-3. **LLM Prediction** — Sends market question + news context to Claude for probabilistic reasoning
-4. **Edge Calculation** — `edge = |model_prob - market_prob|`. Only trades when edge ≥ 8%
-5. **Risk Gating** — Position must pass liquidity, exposure, and drawdown checks
-6. **Execution** — Paper trader logs the trade; live trader submits to Polymarket CLOB
-7. **Monitoring** — Open positions checked every 30s; auto-exit on resolve or stop loss
-
----
-
-## 🛡️ Risk Management
-
-| Parameter | Default | Description |
-|---|---|---|
-| Max single position | 3% | Max % of capital per trade |
-| Max category exposure | 20% | Max across one market category |
-| Daily drawdown kill | 5% | Bot halts if daily loss exceeds this |
-| Min edge | 8% | Minimum model vs. market probability gap |
-| Min confidence | 72% | Minimum model confidence to enter |
-| Min liquidity | $5,000 | Skip illiquid markets |
-| Cash reserve | 15% | Always kept as dry powder |
-
----
-
-## ⚠️ Disclaimer
-
-This software is for **educational and research purposes only**. Prediction market trading involves significant financial risk. Past performance does not guarantee future results. **Never trade with money you cannot afford to lose.** The authors accept no responsibility for financial losses.
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md).
+> Start a Discussion or open an Issue to coordinate. All experience levels welcome.
 
 ---
 

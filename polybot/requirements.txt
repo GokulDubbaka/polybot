@@ -1,0 +1,21 @@
+# POLYBOT — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core HTTP
+requests>=2.31.0
+
+# RSS/Feed parsing
+feedparser>=6.0.10
+
+# Data processing
+numpy>=1.24.0
+
+# Database (built-in SQLite, no extra package needed)
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Optional: Faster sentiment analysis (uncomment if needed)
+# vaderSentiment>=3.3.2
+# transformers>=4.35.0   # Only if you want local LLM
+# torch>=2.0.0            # Only if running local models

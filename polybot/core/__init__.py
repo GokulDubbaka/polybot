@@ -1,0 +1,3 @@
+"""
+POLYBOT — Core Package
+"""
